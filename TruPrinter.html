@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruPrinter - Tru Tops App Zeichnungen Plan Pdf Printer</title>
+    <meta name="description" lang="de" content="Das ist Programm fuer zeichnungs(.pdf) vom TruTops Einrichten Plan HTML ausdrucken. Bitte geben Plan nummer, wählen Path to ordner, dann prüfen, und tippen gefundene Zeichnungen nummer zur ausdruck, und klicken - ALLE ZEICHNUNGEN DRUCKEN">
+    <meta name="description" lang="de" content="Programm ist gebaut in Javascript, html, css und mit mix Windows VBA (FileSystemObject), Windows JScript, mit ActiveXObject. Deshalb funktioniert nur in IE11 mit ActiveX erlaubnis(Internetoptionen - Sicherheit - Internet - Benutzerdefiniert - ActiveX-Steuerelemente und Plug-ins -Initialisierung und Ausführung von Steuerskripten ActiveX(Fragen oder Erlaubt)">
+    <meta name="description" lang="en" content="This is program for print drawing(.pdf) from TruTops setup plan HTML. Please enter plan number, select Path to folder, then check and type found drawings number to print, and click - ALLE ZEICHNUNGEN DRUCKEN">
+    <meta name="description" lang="en" content="Program is built in javascript, html, css and with mix Windows VBA (FileSystemObject), Windows JScript, with ActiveXObject. Therefore only works in IE11 with ActiveX permission(Internet Options - Security - Internet - Custom - ActiveX Controls and Plug-ins -Initialization and Execution of Control Scripts ActiveX(Ask or Allowed)">
+    <meta name="author" content="Damian Nass">
+    <style>
+        html {
+            background-image: linear-gradient(to right, #e3e3e3, #4a508c 70%, #9c9c9c);
+        }
+        
+        mark {
+            background-color: rgba(17, 128, 0, 0.2);
+            padding: 0px 5px;
+            border: 4px solid rgba(34, 140, 34, 0.7);
+            border-radius: 3px;
+        }
+        
+        label {
+            display: inline-block;
+            font-size: 1.1rem;
+            margin: 2px;
+        }
+        
+        input {
+            display: inline-block;
+        }
+        
+        input[type='checkbox'] {
+            margin: 1px 4px;
+        }
+        
+        #Saxas_logo {
+            position: absolute;
+            right: 150px;
+            top: 50px;
+            padding: 20px;
+            border-radius: 90px;
+            background-color: white;
+        }
+        
+        #insertDiv {
+            background-color: white;
+            display: inline-block;
+            -ms-grid-columns: min-content;
+            /* transform: scale(0.85);
+            transform-origin: top left; */
+            padding: 5px;
+            margin-left: 5px;
+            margin-top: 10px;
+            border: solid 1px black;
+            border-radius: 5px;
+        }
+        
+        .tableZn {
+            background-color: white;
+            display: inline-block;
+            -ms-grid-columns: min-content;
+            margin: 10px 5px 0 10px;
+        }
+        
+        .divZn {
+            display: block;
+            margin: 10px 5px 0 10px;
+        }
+        
+        .buttonZn {
+            color: white;
+            background-color: rgba(53, 49, 82, 1);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin: 3px;
+            width: 100%;
+        }
+        
+        .OpenButtonZn {
+            color: rgba(53, 49, 82, 1);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 11px;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin: 3px;
+            width: 100%;
+        }
+        
+        .titleLaber {
+            color: white;
+            font-weight: bold;
+            margin: 15px 0 5px 5px;
+        }
+        
+        .inputNumer {
+            padding: 5px;
+            font-size: 1rem;
+            border-radius: 2px;
+        }
+        
+        .divZnMain {
+            display: inline-block;
+            margin-left: 15px;
+            margin-top: 18px;
+        }
+        
+        .green {
+            color: #006600;
+            padding: 0px 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .yellow {
+            color: rgba(255, 162, 0, 1);
+            font-weight: bold;
+            padding: 0px 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .red {
+            color: red;
+            font-weight: bold;
+            padding: 0px 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .backGwhite {
+            background-color: ghostwhite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="divZnMain">
+        <div class="divZn">
+            <label class="titleLaber" for="Ordner" name="PRpathLaber">Bitte Program und Ordner Wählen:</label><br>
+            <input disabled="true" class="inputNumer" style="width: 10px;" type="text" value="P">
+            <input class="inputNumer" type="text" value="1084" id="PRnummer" onkeypress="EnterCheck()"><br>
+        </div>
+        <div class="divZn">
+            <input type="radio" name="PRpath" id="PRpathID1" value="G:/BT3_T/TOPS100/TAFEL/" checked="checked"><label for="PRpathID1">TOPS100</label><br>
+            <input type="radio" name="PRpath" id="PRpathID2" value="G:/BT3_T/TOPS300/TAFEL/"><label for="PRpathID2">TOPS300</label><br>
+            <input type="radio" name="PRpath" id="PRpathID3" value="G:/BT3_T/TOPS800/TAFEL/"><label for="PRpathID3">TOPS800</label><br>
+            <input class="OpenButtonZn" type="button" value="Öffnen TruTops Program" onclick="readFilehtml();" /><br>
+        </div>
+
+        <div class="tableZn backGwhite">
+            <table width="600" border="1" cellspacing="1" cellpadding="1">
+                <thead>
+                    <tr>
+                        <th style="padding: 5px 0px;">Zn Nr. aus Plan:</th>
+                        <th style="padding: 5px 0px;">Aktuelle Rev:</th>
+                    </tr>
+                </thead>
+                <tbody id="tableZn"></tbody>
+            </table>
+        </div>
+        <div class="divZn">
+            <input class="buttonZn" type="button" value="ALLE ZEICHNUNGEN DRUCKEN" onclick="Alldrucken();" /><br>
+        </div>
+        <div id="insertDiv"></div>
+        <div class="divZn">
+            <input class="buttonZn" type="button" value="ALLE ZEICHNUNGEN DRUCKEN" onclick="Alldrucken();" /><br>
+        </div>
+    </div>
+    <script type="text/javascript" language="javascript">
+        // PART 1 - WAIT FOR ENTER PRESS
+        function EnterCheck() {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                readFilehtml();
+            };
+        };
+        // ENDS PART 1
+
+        function readFilehtml() {
+
+            // PART 1 - GET PATH VALUE AND ID FROM RADIO INPUT
+            var PRpathValueName = document.getElementsByName('PRpath');
+            var PRpathValue, PRpathSetnr;
+            for (var i = 0; i < PRpathValueName.length; i++) {
+                if (PRpathValueName[i].checked) {
+                    PRpathValue = PRpathValueName[i].value;
+                    PRpathSetnr = PRpathValueName[i].id;
+                }
+                //console.log(PRpathSetnr);
+            }
+            // 1 ENDS PART 
+            // ORGIN - set var path to produktion
+            const path = PRpathValue + "P" + document.getElementById('PRnummer').value + ".html";
+            //const path = "C:/xampp/htdocs/site/TruTopsPrinter/" + "P" + document.getElementById('PRnummer').value + ".html";
+            //console.log(path);
+            var fso = new ActiveXObject('Scripting.FileSystemObject');
+
+            if (fso.FileExists(path)) {
+                iStream = fso.OpenTextFile(path, 1, false);
+                // SET SCREEN DISPLAYED BACK
+                document.getElementById('tableZn').innerHTML = "";
+                document.getElementById('insertDiv').innerHTML = "";
+                document.getElementById('insertDiv').classList.remove("yellow");
+                // DISPLAY PLAN
+                document.getElementById('insertDiv').innerHTML += iStream.ReadAll();
+                // //iStream.Close() - because IT IS ON FILE OPERATION
+                iStream.Close();
+                //console.log(path);
+
+                // PART 2 - SEARCH LOGIC START
+                setTimeout(function() {
+                    //AUTOMATIC SEARCH ZN NR IN HTML FILE
+                    searchZn();
+                    // SET RADIO BUTTON BACK
+                    document.getElementById(PRpathSetnr).checked = true;
+                }, 50);
+                // 2 ENDS PART 
+            } else {
+                // DISPLAY ERROR PLAN NOT EXITS
+                document.getElementById('insertDiv').innerHTML = "&nbspTRUTOPS HTML EINRICHTEPLAN - KEIN GEFUNDEN&nbsp";
+                document.getElementById('insertDiv').className = "yellow";
+                document.getElementById('tableZn').innerHTML = "";
+            }
+
+        }
+    </script>
+    <script type="text/javascript" language="javascript">
+        var ZnNummerslength = "";
+        //AUTOMATIC SEARCH ZN NR IN HTML FILE AND SET INTO TABLE
+        function searchZn() {
+            var insertDiv = document.getElementById('insertDiv').innerHTML;
+            var insertDiv2 = document.getElementById('insertDiv');
+            var searchItem = 'TEILE-ID:';
+            // var searchSrcBmp = 'src="';
+            var paragraph = document.body.textContent || document.body.innerText;
+
+            // PART 1 - REPACE COMMENTS TO DISPLAY NONE
+            var comme = "<!--";
+            var commeEnd = "-->";
+            var re_comme = new RegExp(comme, 'g');
+            var re_commeEnd = new RegExp(commeEnd, 'g');
+
+            if (comme.length > 0)
+                document.body.innerHTML = document.body.innerHTML.replace(re_comme, '<p style="display:none">');
+            else insertDiv2.innerHTML = insertDiv;
+
+            if (commeEnd.length > 0)
+                document.body.innerHTML = document.body.innerHTML.replace(re_commeEnd, '</p>');
+            else insertDiv2.innerHTML = insertDiv;
+            // ENDS PART 1
+
+            // PART 2 - GET ZEICH NUMMER BY TAG
+            var ZnNummers = [];
+            var zn = document.getElementsByTagName("zeichn_nummer");
+            for (var i = 0; i < zn.length; i++) {
+                ZnNummers.push(zn[i].textContent);
+            }
+            //console.log(ZnNummers);
+            // ENDS PART 2
+
+            // // PART 3 - MARK GREEN ALL ZEICH NUMMER
+            // var ZnNummersReplaced = [];
+            // ZnNummers.forEach(function(element) {
+            //     ZnNummersReplaced.push('<font size="2">' + element + '&nbsp;</font>');
+            // });
+            // //console.log(ZnNummersReplaced);
+
+            // ZnNummersReplaced.forEach(function(element) {
+            //     document.body.innerHTML = document.body.innerHTML.replace(element, '<span class="green">' + element + '</span>');
+            // });
+            // // ENDS PART 3
+
+            // PART 4 - MARK GREEN ALL 'TEILE-ID:'
+            var repl = new RegExp(searchItem, 'g');
+            if (searchItem.length > 0)
+                document.body.innerHTML = document.body.innerHTML.replace(repl, '<mark>$&</mark>');
+            else insertDiv2.innerHTML = insertDiv;
+            // ENDS PART 4
+
+            // PART 7 - MARK GREEN ALL 'TEILE-ID:'
+            // ORGIN - set var toReplayBmp to produktion
+            var toReplayBmp = 'src="' + PRpathValue;
+            //var toReplayBmp = 'src="' + 'C:/xampp/htdocs/site/TruTopsPrinter/';
+
+            document.body.innerHTML = document.body.innerHTML.replace(/src="/g, toReplayBmp);
+
+            // This Sets is not optimal. It will be better to omit first replace match: ...
+            document.body.innerHTML = document.body.innerHTML.replace(toReplayBmp, 'src="');
+            // ENDS PART 7
+
+            // PART 5 - WRITE TABLE WITH ZECHNUNGS NUMER FROM PLAN'
+            var rows = '';
+            for (var i = 0; i < ZnNummers.length; i++) {
+                rows += '<tr valign="top"><td style="text-align: center;"><font size="3">' + ZnNummers[i] + '</font></td>' + '<td style="text-align: center;"><input type="checkbox" name="CheckAkt" id="CheckAktId' + [i] + '" checked="checked"><font size="3" id="rowID' + [i] + '"></font></td></tr>';
+            }
+            ZnNummerslength = ZnNummers.length;
+            rows += '<tr valign="top"><td style="text-align: center;padding: 10px 0px;"><font size="2">Anzahl:&nbsp(&nbsp' + ZnNummerslength + '&nbsp)</font></td>' + '<td style="text-align: center;padding: 10px 0px;" ><font size="3" id="rowIDlength"></font></td></tr>';
+            rows +=
+                document.getElementById('tableZn').innerHTML = rows;
+            // ENDS PART 5
+
+            // PART 6 - SEND ARRAY ZnNummers TO FUNCTION SearchPath()
+            // setTimeout(function() {
+            ZnNummers.forEach(function(element, index) {
+                element = SearchPath(element, index);
+                // START FUNCTION AnzahlCheck() AT LAST ARRAY
+                if (index === ZnNummers.length - 1) {
+                    AnzahlCheck();
+                }
+            });
+            // }, 1000);
+            // ENDS PART 6
+        }
+    </script>
+    <script type="text/javascript" language="javascript">
+        // ORGIN - set var path to produktion
+        const folderpathIndex = "H:/serie/";
+        // const folderpathIndex = "C:/xampp/htdocs/site/Ftest/serie/";
+
+        // SEARCH IN ZN ARCHIV AKTUALL ZAICHNUNGEN AND SET IN TABLE
+        function SearchPath(znSearch, index) {
+            //var index = index;
+            var znSearchIF = znSearch;
+            //console.log('rowID' + index);
+            // do zrobienia -  logic if 4 or 5 ?? done!
+            // var name = "5401390_";
+            // var name1 = "421271_B";
+
+
+
+            var SourcePath = '';
+
+
+            var SeaSub1 = znSearchIF.substr(0, 2);
+            var SeaSub2 = znSearchIF.substr(2, 2);
+
+            var takeDirZn = String(folderpathIndex + SeaSub1 + '/' + SeaSub2 + '/');
+            //console.log(takeDirZn);
+
+            var fso1 = new ActiveXObject("Scripting.FileSystemObject");
+
+            GetFolderAllPath = fso1.GetFolder(takeDirZn);
+            var fcEnumPath = new Enumerator(GetFolderAllPath.SubFolders);
+
+
+            for (; !fcEnumPath.atEnd(); fcEnumPath.moveNext()) {
+                SourcePath += fcEnumPath.item().Name + ',';
+            }
+            SourcePath = SourcePath.split(',');
+            SourcePath.pop();
+
+            // Rev Letter to .toUpperCase() if not is Capital Letter
+            var Sear2 = znSearchIF.substr(0, 7).toUpperCase();
+            var revComparZn = znSearchIF.substr(7, 1).toUpperCase();
+            //console.log(Sear2);
+            var finalArray = SourcePath.filter(function(item) {
+                if (item.search(Sear2) == 0) {
+                    return item !== undefined;
+                }
+            });
+
+            var valfinalArray = finalArray[finalArray.length - 1];
+            //console.log(val);
+
+            if (valfinalArray == undefined) {
+                document.getElementById('rowID' + index).innerHTML = "Keine gefunden";
+                document.getElementById('rowID' + index).className = "red";
+                document.getElementById('CheckAktId' + index).checked = false;
+
+            } else {
+                SearchFile(valfinalArray, index, takeDirZn, revComparZn);
+            }
+            //console.log(finalArray);
+
+        }
+    </script>
+    <script type="text/javascript" language="javascript">
+        function SearchFile(valfinalArray, index, takeDirZn, revComparZn) {
+
+            var takeDirZnFile = takeDirZn + valfinalArray;
+            // console.log(takeDirZnFile);
+            var fso2 = new ActiveXObject("Scripting.FileSystemObject");
+
+            var fA2 = fso2.GetFolder(takeDirZnFile);
+            var fcA = new Enumerator(fA2.files);
+
+
+            var SearFiles = '';
+            for (; !fcA.atEnd(); fcA.moveNext()) {
+                SearFiles += fcA.item().Name + ',';
+            }
+            SearFiles = SearFiles.split(',');
+            SearFiles.pop();
+            // console.log(SearFiles);
+            var finalArray2 = SearFiles.filter(function(item) {
+                return item.match(".pdf")
+            });
+
+            // console.log(finalArray2);
+            var filePDFname = finalArray2[finalArray2.length - 1];
+
+            if (filePDFname == undefined) {
+                document.getElementById('rowID' + index).innerHTML = "Keine gefunden 2";
+            } else {
+                var revComparArch = filePDFname.substr(8, 1);
+
+                if (revComparZn == revComparArch) {
+                    document.getElementById('rowID' + index).innerHTML = filePDFname;
+                    document.getElementById('rowID' + index).className = "green";
+                } else if (revComparZn == "_" & revComparArch == "0") {
+                    document.getElementById('rowID' + index).innerHTML = filePDFname;
+                    document.getElementById('rowID' + index).className = "green";
+                } else {
+                    document.getElementById('rowID' + index).innerHTML = filePDFname;
+                    document.getElementById('rowID' + index).className = "yellow";
+                }
+            }
+
+            //console.log(filePDFname);
+        }
+    </script>
+    <script type="text/javascript" language="javascript">
+        // CHECK THE NUMBER OF HITS
+        function AnzahlCheck() {
+            var CheckedElems = document.querySelectorAll("input[name='CheckAkt']:checked");
+            var aktuelleAnzahl = 0;
+            // console.log(CheckedElems);
+            for (var i = 0; i < CheckedElems.length; i++) {
+                if (CheckedElems[i].checked == true) {
+                    aktuelleAnzahl++;
+                }
+            }
+            document.getElementById('rowIDlength').innerHTML = 'Anzahl:&nbsp(&nbsp' + aktuelleAnzahl + '&nbsp/&nbsp' + ZnNummerslength + '&nbsp)';
+            if (aktuelleAnzahl == ZnNummerslength) {
+                document.getElementById('rowIDlength').className = "green";
+            } else {
+                document.getElementById('rowIDlength').className = "yellow";
+            }
+        }
+    </script>
+    <script type="text/javascript" language="javascript">
+        function Alldrucken() {
+            // PART 1 - GET SELECTED PDF FILE TO ARRAY
+            var CheckedElems = document.querySelectorAll("input[name='CheckAkt']:checked");
+            var getCheckedID = '';
+            // console.log(CheckedElems);
+            for (var i = 0; i < CheckedElems.length; i++) {
+                if (CheckedElems[i].checked == true) {
+                    getCheckedID += 'rowID' + CheckedElems[i].id.substr(-1, 1) + ',';
+                }
+            }
+            // 1 ENDS PART
+            getCheckedID = getCheckedID.split(',');
+            getCheckedID.pop();
+            //console.log(getCheckedID);
+            // PART 2 - GET SELECTED PDF NAME FILE TO ARRAY
+            var getNameZN = '';
+            for (var i = 0; i < getCheckedID.length; i++) {
+                getNameZN += document.getElementById(getCheckedID[i]).textContent + ',';
+
+            };
+            getNameZN = getNameZN.split(',');
+            getNameZN.pop();
+            //console.log(getNameZN);
+            // 2 ENDS PART
+            // PART 3 - CHANGE ARRAY TO PATH PDF FILE DIR
+            var getPathZN = '';
+            for (var i = 0; i < getNameZN.length; i++) {
+                getPathZN += folderpathIndex + getNameZN[i].substr(0, 2) + '/' + getNameZN[i].substr(2, 2) + '/' + getNameZN[i].substr(0, 10) + '/' + getNameZN[i] + ',';
+            };
+            getPathZN = getPathZN.split(',');
+            getPathZN.pop();
+            //console.log(getPathZN);
+            // 3 ENDS PART
+            // PART 4 - SEND ARRAY TO CMD
+            for (var i = 0; i < getPathZN.length; i++) {
+                RunCMDprint(getPathZN[i]);
+            };
+            // 4 ENDS PART
+        };
+    </script>
+    <script type="text/javascript" language="javascript">
+        // SEND COMMAND PRINT TO CMD FOR FILEPATH
+        function RunCMDprint(filepath) {
+            // ORGIN - Check with var file work?
+            //var file = "'cmd /C CD C: & start acrord32 /p /n /h \"" + filepath + "\"'";
+            var file = "cmd /C CD C: & start acrord32 /p /n /h \"" + filepath + "\"";
+            console.log(file);
+            WshShell = new ActiveXObject("WScript.Shell");
+            WshShell.run(file);
+        }
+    </script>
+    <svg version="1.1" id="Saxas_logo" onclick="alert('TruPrinter - TruTops App Zeichnungen PDF Plan Printer\n\n  Das ist Programm fuer zeichnungs(.pdf) vom TruTops Einrichten Plan HTML ausdrucken. Bitte geben Plan nummer, wählen Path to ordner, dann prüfen, und tippen gefundene Zeichnungen nummer zur ausdruck, und klicken - ALLE ZEICHNUNGEN DRUCKEN.\n  Programm ist gebaut in Javascript, html, css und mit mix Windows VBA (FileSystemObject), Windows JScript, mit ActiveXObject. Deshalb funktioniert nur in IE11 mit ActiveX erlaubnis(Internetoptionen - Sicherheit - Internet - Benutzerdefiniert - ActiveX-Steuerelemente und Plug-ins -Initialisierung und Ausführung von Steuerskripten ActiveX(Fragen oder Erlaubt).\n  Autor: Damian Nass\n  Email: damiannass88(a)gmail.com');"
+        x="0px" y="0px" width="368px" height="57px" viewBox="0 0 368 57">  <image id="image0" width="368" height="57" x="0" y="0"
+        xlink:href="data:image/png;base64,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" />
+    </svg>
+</body>
+
+</html>
