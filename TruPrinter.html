@@ -10,7 +10,8 @@
     <meta name="description" lang="de" content="Programm ist gebaut in Javascript, html, css und mit mix Windows VBA (FileSystemObject), Windows JScript, mit ActiveXObject. Deshalb funktioniert nur in IE11 mit ActiveX erlaubnis(Internetoptionen - Sicherheit - Internet - Benutzerdefiniert - ActiveX-Steuerelemente und Plug-ins -Initialisierung und Ausführung von Steuerskripten ActiveX(Fragen oder Erlaubt)">
     <meta name="description" lang="en" content="This is program for print drawing(.pdf) from TruTops setup plan HTML. Please enter plan number, select Path to folder, then check and type found drawings number to print, and click - ALLE ZEICHNUNGEN DRUCKEN">
     <meta name="description" lang="en" content="Program is built in javascript, html, css and with mix Windows VBA (FileSystemObject), Windows JScript, with ActiveXObject. Therefore only works in IE11 with ActiveX permission(Internet Options - Security - Internet - Custom - ActiveX Controls and Plug-ins -Initialization and Execution of Control Scripts ActiveX(Ask or Allowed)">
-    <meta name="author" content="Damian Nass">
+    <meta name="author" content="Damian Nass, damiannass88(a)gmail.com">
+    <meta name="copyright" content="MIT License; Copyright (c) 2021 Damian Nass">
     <style>
         html {
             background-image: linear-gradient(to right, #e3e3e3, #4a508c 70%, #9c9c9c);
@@ -285,7 +286,7 @@
             // PART 7 - MARK GREEN ALL 'TEILE-ID:'
             // ORGIN - set var toReplayBmp to produktion
             var toReplayBmp = 'src="' + PRpathValue;
-            //var toReplayBmp = 'src="' + 'C:/xampp/htdocs/site/TruTopsPrinter/';
+            // var toReplayBmp = 'src="' + 'C:/xampp/htdocs/site/TruTopsPrinter/';
 
             document.body.innerHTML = document.body.innerHTML.replace(/src="/g, toReplayBmp);
 
