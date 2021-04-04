@@ -6,3 +6,7 @@ TruPrinter - Tru Tops App drawings Plan Pdf Printer
 
 -This is program for print drawing(.pdf) from TruTops setup plan HTML. Please enter plan number, select Path to folder, then check and type found drawings number to print, and click - ALLE ZEICHNUNGEN DRUCKEN".
 -Program is built in javascript, html, css and with mix Windows VBA (FileSystemObject), Windows JScript, with ActiveXObject. Therefore only works in IE11 with ActiveX permission(Internet Options - Security - Internet - Custom - ActiveX Controls and Plug-ins -Initialization and Execution of Control Scripts ActiveX(Ask or Allowed).
+
+MIT License
+
+Greatings Damian Nass
