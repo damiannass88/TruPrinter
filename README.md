@@ -9,4 +9,8 @@ TruPrinter - Tru Tops App drawings Plan Pdf Printer
 
 MIT License
 
-Greatings Damian Nass
+Greatings, Damian Nass
+
+![image](https://github.com/user-attachments/assets/ff9311b0-972c-4e41-8fea-8473d5f1c327)
+
+
